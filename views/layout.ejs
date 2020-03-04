@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+    <%-include('partials/header')%>
+    <body>
+        
+        <%-include('partials/sidenav')%>
+        
+        <!-- body start -->
+        <%- body %>
+        <!-- body end -->
+    </body>
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+        }
+        
+        /* Set the width of the side navigation to 0 */
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
+    </script>
+</html>

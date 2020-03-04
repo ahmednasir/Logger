@@ -1,0 +1,78 @@
+
+<style>
+  label {
+    margin-left: 20px;
+  }
+  #datepicker {
+    width: 180px;
+    margin: 0 20px 20px 20px;
+  }
+  #datepicker > span:hover {
+    cursor: pointer;
+  }
+  .card {
+    width: 90%;
+    margin-left: 5%;
+  }
+  .timestamp-row {
+    padding: 25px 0px;
+  }
+</style>
+<div class="container-fluid">
+    <%-include('partials/filter')%>
+    <div class="info-container">
+        
+    </div>
+</div>
+<script>
+  $(function() {
+      let result = JSON.parse(`<%- data.Res%>`)
+      
+      function appendDiv(result){
+          counter = 0
+        for(let val of result){
+            let ele = `<div class="row timestamp-row"><div class="card"><div class="card-header">`+
+                            val.Message.TimeStamp+
+            `</div></div></div>`+
+            `<div class="row message-row"><div class="card message" id="`+counter.toString()
+                +`">`+
+                JSON.stringify(val.Message, null, 4)+
+                        // JSON.stringify(val.Message,null,4)+
+            `</div></div>`
+            $(".info-container" ).append(ele)
+          
+            counter++;
+
+        }
+      }
+    $(".datepicker")
+      .datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        format: "dd-mm-yyyy"
+      })
+      .datepicker("update", new Date());
+    $(".get-logs").click(function() {
+      let startDate = $(".start-date").val();
+      let endDate = $(".end-date").val();
+      if (startDate !== endDate) {
+        $.ajax({
+          type: "POST",
+          url: "/info/customised",
+          data: {
+            StartDate: startDate,
+            EndDate: endDate
+          },
+          success: data => {
+            $("#accordion").remove();
+            console.log(data);
+          },
+          error: err => {
+            console.log(err);
+          }
+        });
+      }
+    });
+    appendDiv(result)
+  });
+</script>
