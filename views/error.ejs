@@ -1,3 +1,114 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<div class="container-fluid">
+    <%-include('partials/filter')%>
+    <div class="info-container"></div>
+    <div class="notification card" id="notification-id">
+      <div class="row">
+        <div class="col-md-10">
+          <div class="notification-message">
+            Some message
+          </div>
+        </div>
+        <div class="col-md-2" style="text-align: end;">
+          <button type="button" class="btn notification-close">X</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    $(function() {
+      $(".notification").hide()
+      let bgColor = {
+        "Success":  "#cfffc6",
+        "Warning":  "f9ffc4",
+        "Error":    "#ffe7e7"
+      }
+      let result = JSON.parse(`<%- data.Res%>`);
+      let showFlags = {};
+      function appendDiv(result) {
+        counter = 0;
+        for (let val of result) {
+          let ele =
+            `<div class="row timestamp-row"><div class="card timestamp-card" id="` +
+            counter.toString() +
+            `"><div class="card-header">` +
+            val.Message.TimeStamp +
+            `</div></div></div>` +
+            `<div class="row message-row" id="message` +
+            counter.toString() +
+            `"><div class="card message">` +
+            JSON.stringify(val.Message, null, 4) +
+            `</div></div>`;
+          $(".info-container").append(ele);
+          let id = "#message" + counter.toString();
+          showFlags[id] = false;
+          counter++;
+        }
+        $(".message-row").hide();
+      }
+      $(".datepicker")
+        .datepicker({
+          autoclose: true,
+          todayHighlight: true,
+          format: "dd-mm-yyyy"
+        })
+        .datepicker("update", new Date());
+      $(".get-logs").click(function() {
+        
+        let startDate = $(".start-date").val();
+        let endDate = $(".end-date").val();
+        if (startDate !== endDate) {
+          $.ajax({
+            type: "POST",
+            url: "/errors/customised",
+            data: {
+              StartDate: startDate,
+              EndDate: endDate
+            },
+            success: data => {
+              console.log(data)
+              showSuccess("Showing logs of "+startDate+" - "+endDate)      
+              // $(".timestamp-row").remove()
+              // $(".message-row").remove()
+              appendDiv(data)
+            },
+            error: err => {
+              console.log(err);
+            }
+          });
+        }else{
+          showWarning("Start date and End date cannot be same")
+        }
+      });
+      appendDiv(result);
+  
+      $(".timestamp-card").click(function() {
+        let id = "#message" + this.id.toString();
+        if (showFlags[id]) {
+          $(id).slideUp({ duration: "slow", queue: false });
+          showFlags[id] = false;
+        } else {
+          // $(id).show()
+          $(id).slideDown({ duration: "slow", queue: false });
+          showFlags[id] = true;
+        }
+      });
+      
+      function showSuccess(message){
+        $(".notification").fadeIn(700)
+        $(".notification-message").text(message)
+        document.getElementById("notification-id").style.backgroundColor = bgColor.Success
+        $(".notification").fadeOut(2000)
+      }
+      function showWarning(message){
+        
+        $(".notification").fadeIn(700)
+        $(".notification-message").text(message)
+        document.getElementById("notification-id").style.backgroundColor = bgColor.Warning
+        $(".notification").fadeOut(4000)
+      }
+      $(".notification-close").click(function () {
+          $(".notification").slideToggle(100)
+        })
+    });
+  </script>
+  

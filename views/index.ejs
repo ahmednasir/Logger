@@ -24,7 +24,6 @@
     }
     let result = JSON.parse(`<%- data.Res%>`);
     let showFlags = {};
-    console.log(result)
     function appendDiv(result) {
       counter = 0;
       for (let val of result) {
@@ -82,7 +81,6 @@
     appendDiv(result);
 
     $(".timestamp-card").click(function() {
-      debugger
       let id = "#message" + this.id.toString();
       if (showFlags[id]) {
         $(id).slideUp({ duration: "slow", queue: false });
@@ -92,7 +90,6 @@
         $(id).slideDown({ duration: "slow", queue: false });
         showFlags[id] = true;
       }
-      console.log(showFlags);
     });
     
     function showSuccess(message){

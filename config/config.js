@@ -9,7 +9,8 @@ module.exports = {
                 ERROR:      "errorLogs"
     },
     PAGES: {
-                INDEX:      "index"
+                INDEX:      "index",
+                ERROR:      "error"
     },
     DB_STRING: "mongodb+srv://rhino:DnqVH34F5xpDT88@cluster0-xjozw.mongodb.net/Logs?authSource=admin&replicaSet=Cluster0-shard-0&readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=true"
 };
