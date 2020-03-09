@@ -25,9 +25,16 @@ router.get('/', async function (req, res) {
 });
 
 router.post('/customised', async function (req, res) {
-    console.log(req.body);
     await model.find({}, function (err, result) {
-        res.send({Result: result})
+        let resList = []
+        for(let val of result){
+           let msg = JSON.parse(val.message)
+           msg.TimeStamp = val.timestamp
+           resList.push({
+               "Message": msg
+           })
+        }
+        res.send(resList)
     })
 });
 

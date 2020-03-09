@@ -50,6 +50,38 @@ a {
   padding: 20px;
 }
 
+label {
+    margin-left: 20px;
+  }
+  #datepicker {
+    width: 180px;
+    margin: 0 20px 20px 20px;
+  }
+  #datepicker > span:hover {
+    cursor: pointer;
+  }
+  .card {
+    width: 90%;
+    margin-left: 5%;
+  }
+  .timestamp-row {
+    padding: 25px 0px;
+  }
+  .timestamp-row:hover {
+    cursor: pointer;
+  }
+  .notification{
+    position: fixed !important;
+    width: 79%;
+    padding: 10px 0px;
+    bottom: 3rem;
+    box-shadow: 3px 4px 15px -8px rgba(148,148,148,1);
+    border-radius: 0.5rem !important;
+  }
+  .notification-message{
+    padding-top: 7px;
+    padding-left: 20px;
+  }
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
